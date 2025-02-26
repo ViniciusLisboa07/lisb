@@ -19,7 +19,12 @@ class Parser
       if token.type == :KEYWORD && token.value == "def"
         parse_function
       elsif token.type == :IDENTIFIER
-        parse_assignment
+        if peek_next_token && peek_next_token.type == :EQUAL
+          parse_assignment
+        else
+          expr = parse_expression
+          { type: "ExpressionStatement", expression: expr }
+        end
       else
         raise "Sintaxe inesperada: #{token.inspect}"
       end
@@ -30,9 +35,9 @@ class Parser
       name = consume(:IDENTIFIER).value
       consume(:LPAREN)
       args = []
-      while current_token.type == :IDENTIFIER
+      while current_token && current_token.type == :IDENTIFIER
         args << consume(:IDENTIFIER).value
-        consume(:COMMA) if current_token&.type == :COMMA
+        consume(:COMMA) if current_token && current_token.type == :COMMA
       end
       consume(:RPAREN)
       body = parse_statement
@@ -48,13 +53,42 @@ class Parser
     end
   
     def parse_expression
+      left = parse_primary
+      
+      if current_token && [:PLUS, :MINUS].include?(current_token.type)
+        operator = consume(current_token.type).value
+        right = parse_expression
+        return { type: "BinaryExpression", operator: operator, left: left, right: right }
+      end
+      
+      left
+    end
+  
+    def parse_primary
       token = current_token
       if token.type == :NUMBER
         consume(:NUMBER)
         { type: "Number", value: token.value }
       elsif token.type == :IDENTIFIER
-        consume(:IDENTIFIER)
-        { type: "Variable", name: token.value }
+        name = consume(:IDENTIFIER).value
+        
+        if current_token && current_token.type == :LPAREN
+          consume(:LPAREN)
+          args = []
+          
+          if current_token && current_token.type != :RPAREN
+            args << parse_expression
+            while current_token && current_token.type == :COMMA
+              consume(:COMMA)
+              args << parse_expression
+            end
+          end
+          
+          consume(:RPAREN)
+          { type: "FunctionCall", name: name, arguments: args }
+        else
+          { type: "Variable", name: name }
+        end
       else
         raise "Expressão inválida: #{token.inspect}"
       end
@@ -69,6 +103,10 @@ class Parser
   
     def current_token
       @tokens[@position]
+    end
+  
+    def peek_next_token
+      @tokens[@position + 1] if @position + 1 < @tokens.length
     end
   end
   

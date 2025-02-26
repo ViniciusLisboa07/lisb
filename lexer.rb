@@ -36,6 +36,12 @@ class Lexer
       elsif char == "\n"
         advance
         Token.new(:NEWLINE, "\n")
+      elsif char == ";"
+        advance
+        Token.new(:SEMICOLON, ";")
+      elsif char == ","
+        advance
+        Token.new(:COMMA, ",")
       else
         raise "Caractere inesperado: #{char}"
       end

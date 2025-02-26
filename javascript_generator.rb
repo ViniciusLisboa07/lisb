@@ -19,6 +19,13 @@ class JavaScriptGenerator
         node[:value].to_s
       when "Variable"
         node[:name]
+      when "BinaryExpression"
+        "#{generate_node(node[:left])} #{node[:operator]} #{generate_node(node[:right])}"
+      when "FunctionCall"
+        args = node[:arguments].map { |arg| generate_node(arg) }.join(', ')
+        "#{node[:name]}(#{args})"
+      when "ExpressionStatement"
+        generate_node(node[:expression]) + ";"
       else
         raise "Tipo de nó desconhecido: #{node[:type]}"
       end
