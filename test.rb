@@ -1,3 +1,7 @@
+require_relative 'lexer'
+require_relative 'parser'
+require_relative 'javascript_generator'
+
 code = <<~RUBY
   def soma(a, b)
     a + b
