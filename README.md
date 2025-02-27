@@ -1,4 +1,4 @@
-# LISB - Um Compilador Ruby para JavaScript
+# LISB - Compilador Ruby para JavaScript
 
 LISB é um compilador simples que traduz código em uma sintaxe similar a Ruby para JavaScript. Este projeto é educacional e visa demonstrar os princípios básicos de construção de compiladores.
 
