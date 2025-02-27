@@ -3,11 +3,19 @@ require_relative 'parser'
 require_relative 'javascript_generator'
 
 code = <<~RUBY
+  def sub(a, b)
+    a - b
+  end
+
+  x = sub(3, 5)
+
   def soma(a, b)
     a + b
   end
 
-  x = soma(3, 5)
+  y = sub(3, 5)
+
+  z = soma(x, y)
 RUBY
 
 lexer = Lexer.new(code)
