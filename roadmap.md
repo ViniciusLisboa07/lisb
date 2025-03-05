@@ -16,7 +16,6 @@
 - [ ] Adicionar suporte para blocos de código
 
 ### Fase 3: Verificação Semântica
-- [ ] Implementar verificação básica de tipos
 - [ ] Detectar variáveis não utilizadas
 - [ ] Verificar chamadas de função com número correto de argumentos
 - [ ] Verificação de escopo
