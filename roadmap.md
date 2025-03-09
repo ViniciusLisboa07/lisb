@@ -2,7 +2,7 @@
 ## Roadmap de Melhorias Futuras
 
 ### Fase 1: Expansão da Linguagem Básica
-- [ ] Adicionar suporte para strings
+- [x] Adicionar suporte para strings
 - [ ] Implementar estruturas de controle (if/else, while)
 - [ ] Adicionar operadores de comparação (==, !=, <, >, <=, >=)
 - [ ] Suportar operadores lógicos (&&, ||, !)
