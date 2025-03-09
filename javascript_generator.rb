@@ -17,6 +17,8 @@ class JavaScriptGenerator
         "let #{node[:name]} = #{generate_node(node[:value])};"
       when "Number"
         node[:value].to_s
+      when "String"
+        "\"#{node[:value].gsub('"', '\\"')}\""
       when "Variable"
         node[:name]
       when "BinaryExpression"

@@ -3,29 +3,30 @@ require_relative 'parser'
 require_relative 'javascript_generator'
 
 code = <<~RUBY
-  def sub(a, b)
-    a - b
+  def greeting(name)
+    "Olá, " + name
   end
 
-  x = sub(3, 5)
+  message = greeting("mundo")
 
   def soma(a, b)
     a + b
   end
 
-  y = sub(3, 5)
-
-  z = soma(x, y)
+  resultado = soma(10, 20)
+  resultado
 RUBY
 
 lexer = Lexer.new(code)
 tokens = []
 while (token = lexer.next_token)
   tokens << token
+  puts "Token: #{token.type}, Value: #{token.value.inspect}"
 end
 
 parser = Parser.new(tokens)
 ast = parser.parse
 
 generator = JavaScriptGenerator.new(ast)
+puts "\nJavaScript gerado:"
 puts generator.generate

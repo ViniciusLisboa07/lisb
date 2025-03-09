@@ -25,6 +25,9 @@ class Parser
           expr = parse_expression
           { type: "ExpressionStatement", expression: expr }
         end
+      elsif [:STRING, :NUMBER, :PLUS, :MINUS].include?(token.type)
+        expr = parse_expression
+        { type: "ExpressionStatement", expression: expr }
       else
         raise "Sintaxe inesperada: #{token.inspect}"
       end
@@ -69,6 +72,9 @@ class Parser
       if token.type == :NUMBER
         consume(:NUMBER)
         { type: "Number", value: token.value }
+      elsif token.type == :STRING
+        consume(:STRING)
+        { type: "String", value: token.value }
       elsif token.type == :IDENTIFIER
         name = consume(:IDENTIFIER).value
         

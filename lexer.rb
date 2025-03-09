@@ -18,6 +18,8 @@ class Lexer
         read_identifier
       elsif digit?(char)
         read_number
+      elsif char == '"' || char == "'"
+        read_string(char)
       elsif char == "="
         advance
         Token.new(:EQUAL, "=")
@@ -61,6 +63,27 @@ class Lexer
       start = @position
       advance while digit?(@source[@position])
       Token.new(:NUMBER, @source[start...@position].to_i)
+    end
+  
+    def read_string(quote_char)
+      advance
+      start = @position
+      
+      while @position < @source.length && @source[@position] != quote_char
+        if @source[@position] == "\\" && @position + 1 < @source.length
+          advance
+        end
+        advance
+      end
+      
+      if @position >= @source.length
+        raise "String não terminada"
+      end
+      
+      value = @source[start...@position]
+      advance
+      
+      Token.new(:STRING, value)
     end
   
     def letter?(char)
